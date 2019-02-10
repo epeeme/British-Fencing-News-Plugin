@@ -3,11 +3,11 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       http://example.com
+ * @link       http://dankew.me
  * @since      1.0.0
  *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/public
+ * @package    Britishfencing_News
+ * @subpackage Britishfencing_News/public
  */
 
 /**
@@ -16,11 +16,13 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the public-facing stylesheet and JavaScript.
  *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/public
- * @author     Your Name <email@example.com>
+ * @package    Britishfencing_News
+ * @subpackage Britishfencing_News/public
+ * @author     Dan Kew <dankew@ntlworld.com>
  */
-class Plugin_Name_Public {
+class Britishfencing_News_Public {
+
+	private $_newsIndex = 0; 
 
 	/**
 	 * The ID of this plugin.
@@ -73,7 +75,7 @@ class Plugin_Name_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/plugin-name-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/britishfencing-news-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -96,8 +98,70 @@ class Plugin_Name_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-name-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/britishfencing-news-public.js', array( 'jquery' ), $this->version, false );
 
 	}
+
+	public function britishfencing_news_output( $atts ) {
+		// $args = shortcode_atts(
+		// 	array(
+		// 		'arg1'   => 'arg1',
+		// 		'arg2'   => 'arg2',
+		// 	),
+		// 	$atts
+		// );
+		// code...
+		// $var = ( strtolower( $args['arg1']) != "" ) ? strtolower( $args['arg1'] ) : 'default';
+		// code...
+		// return $var;
+
+		$bfn = new HandleJSON();
+		$theNewsData = $bfn -> getJSON();
+
+		$non = $this -> _getNumberOfNewsItems($theNewsData);
+
+        $plugInOutput = "<div class=\"container-fluid bfContainer\">";
+
+		while ($this->_newsIndex < $non)
+        {
+			$title = $bfn -> getTitle($theNewsData, $this->_newsIndex);
+			$excerpt = $bfn -> getExcerpt($theNewsData, $this->_newsIndex);
+			$link = $bfn -> getLink($theNewsData, $this->_newsIndex);
+			$date = $bfn -> getDatePub($theNewsData, $this->_newsIndex);
+
+			$plugInOutput .= "<div class=\"row bfRow\">
+				<div class=\"col-3 bfImage\"><img src=\"".$bfn -> getMediaLink($theNewsData, $this->_newsIndex)."\"></div>
+				<div class=\"col-9 bfTextLine\">
+				  <div class=\"row bfRow\">
+				    <div class=\"col-12 bfTitle\"><h3>".$bfn -> getTitle($theNewsData, $this->_newsIndex)."</h3>
+					  <div class=\"bfDate\">".date("F j, Y, g:i a", rest_parse_date($bfn -> getDatePub($theNewsData, $this->_newsIndex)))."</div>
+					</div>
+			      </div>
+				  <div class=\"row bfRow\">
+				    <div class=\"col-12 bfExcerpt\">".$bfn -> getExcerpt($theNewsData, $this->_newsIndex)."</div>
+				  </div>
+				</div>
+			  </div><hr>";
+
+			$this->_newsIndex += 1;
+		}
+
+		$plugInOutput .= "</div>";
+
+		echo $plugInOutput;
+
+	}
+
+    /**
+     * Return the number of news items found in the JSON data
+     * 
+     * @param object $allnews JSON decoded dataset
+     * 
+     * @return int
+     */
+    private function _getNumberOfNewsItems($allnews)
+    {
+         return count($allnews); 
+    }
 
 }

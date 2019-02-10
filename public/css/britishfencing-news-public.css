@@ -2,3 +2,35 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+
+.bfRow { 
+     float:left; 
+     display:block;
+     width:100%;
+}
+
+.bfImage {
+     float:left;
+     width:33%;
+}
+
+.bfImage img { 
+    margin:16px 0px 0px 0px; 
+    padding-right:32px;
+}
+
+.bfTextLine {
+     width:66%;
+     float:left;
+}
+
+.bfTitle {
+     float:left;
+}
+
+.bfDate {
+     float:left;
+     color:#666;
+     font-style: italic;
+}
+

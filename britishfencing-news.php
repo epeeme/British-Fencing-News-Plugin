@@ -14,8 +14,8 @@
  *
  * @wordpress-plugin
  * Plugin Name:       British Fencing News
- * Plugin URI:        http://example.com/plugin-name-uri/
- * Description:       Using WP JSON this plugin allows the latest news from British Fencing to be displayed on any web site
+ * Plugin URI:        https://github.com/epeeme/British-Fencing-News-Plugin
+ * Description:       Allows the latest news from British Fencing to be displayed on any web site
  * Version:           1.0.0
  * Author:            Dan kew
  * Author URI:        http://dankew.me

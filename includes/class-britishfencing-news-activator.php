@@ -3,11 +3,11 @@
 /**
  * Fired during plugin activation
  *
- * @link       http://example.com
+ * @link       http://dankew.me
  * @since      1.0.0
  *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
+ * @package    Britishfencing_News
+ * @subpackage Britishfencing_News/includes
  */
 
 /**
@@ -16,11 +16,11 @@
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0.0
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
- * @author     Your Name <email@example.com>
+ * @package    Britishfencing_News
+ * @subpackage Britishfencing_News/includes
+ * @author     Dan Kew <dankew@ntlworld.com>
  */
-class Plugin_Name_Activator {
+class Britishfencing_News_Activator {
 
 	/**
 	 * Short Description. (use period)

@@ -6,11 +6,11 @@
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
- * @link       http://example.com
+ * @link       http://dankew.me
  * @since      1.0.0
  *
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
+ * @package    Britishfencing_News
+ * @subpackage Britishfencing_News/includes
  */
 
 /**
@@ -20,11 +20,11 @@
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    Plugin_Name
- * @subpackage Plugin_Name/includes
- * @author     Your Name <email@example.com>
- */
-class Plugin_Name_i18n {
+ * @package    Britishfencing_News
+ * @subpackage Britishfencing_News/includes
+ * @author     Dan Kew <dankew@ntlworld.com>
+*/
+class Britishfencing_News_i18n {
 
 
 	/**
