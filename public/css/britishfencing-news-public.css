@@ -34,3 +34,29 @@
      font-style: italic;
 }
 
+#bfPanelContainer {     
+  float:left;
+  width:100%;
+  display:block;
+  clear:both;
+}
+
+@media (min-width: 576px) {  
+     .bfPanel {     
+        float:left;
+        width:100%;
+        padding:16px;
+        display:block;
+     }
+}
+
+@media (min-width: 768px) {  
+     .bfPanel {     
+        float:left;
+        width:50%;
+        padding:24px;
+        display:block;
+     }
+     .cl1 { clear:left; }
+}
+

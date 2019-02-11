@@ -115,36 +115,74 @@ class Britishfencing_News_Public {
 		// code...
 		// return $var;
 
-		$bfn = new HandleJSON();
+		$bfn = new HandleJSON( $this->plugin_name, $this->version );
 		$theNewsData = $bfn -> getJSON();
 
 		$non = $this -> _getNumberOfNewsItems($theNewsData);
 
-        $plugInOutput = "<div class=\"container-fluid bfContainer\">";
+    $plugInOutput = "<div class=\"container-fluid bfContainer\">";
 
-		while ($this->_newsIndex < $non)
-        {
-			$title = $bfn -> getTitle($theNewsData, $this->_newsIndex);
-			$excerpt = $bfn -> getExcerpt($theNewsData, $this->_newsIndex);
-			$link = $bfn -> getLink($theNewsData, $this->_newsIndex);
-			$date = $bfn -> getDatePub($theNewsData, $this->_newsIndex);
+		$options = get_option($this->plugin_name); 
+		$show_excerpt = ( isset( $options['show_excerpt'] ) && ! empty( $options['show_excerpt'] ) ) ? esc_attr( $options['show_excerpt'] ) : 'Yes';
+		$display_type = ( isset( $options['display_type'] ) && ! empty( $options['display_type'] ) ) ? esc_attr( $options['display_type'] ) : 'List';
 
-			$plugInOutput .= "<div class=\"row bfRow\">
-				<div class=\"col-3 bfImage\"><img src=\"".$bfn -> getMediaLink($theNewsData, $this->_newsIndex)."\"></div>
-				<div class=\"col-9 bfTextLine\">
-				  <div class=\"row bfRow\">
-				    <div class=\"col-12 bfTitle\"><h3>".$bfn -> getTitle($theNewsData, $this->_newsIndex)."</h3>
-					  <div class=\"bfDate\">".date("F j, Y, g:i a", rest_parse_date($bfn -> getDatePub($theNewsData, $this->_newsIndex)))."</div>
-					</div>
-			      </div>
-				  <div class=\"row bfRow\">
-				    <div class=\"col-12 bfExcerpt\">".$bfn -> getExcerpt($theNewsData, $this->_newsIndex)."</div>
-				  </div>
-				</div>
-			  </div><hr>";
-
-			$this->_newsIndex += 1;
-		}
+     switch ($display_type) {
+			 case 'List' : {
+				 $plugInOutput .= "<ul>";
+				 while ($this->_newsIndex < $non) {
+					 
+				 	 $plugInOutput .= "<li><a href=\"".$bfn -> getLink($theNewsData, $this->_newsIndex)."\">".$bfn -> getTitle($theNewsData, $this->_newsIndex)."</a> (".date("F j, Y, g:i a", rest_parse_date($bfn -> getDatePub($theNewsData, $this->_newsIndex))).")";
+					 if ($show_excerpt === 'Yes') {
+						 $plugInOutput .= "<br>".$bfn -> getExcerpt($theNewsData, $this->_newsIndex)."<hr>";
+					 }		
+					 $plugInOutput .= "</li>";
+					 $this->_newsIndex += 1;
+				 }
+				 $plugInOutput .= "</ul>";
+         break;
+			 }
+			 case 'Agenda' : {
+				 while ($this->_newsIndex < $non) {
+					 $plugInOutput .= "<div class=\"row bfRow\">
+						<div class=\"col-3 bfImage\"><img src=\"".$bfn -> getMediaLink($theNewsData, $this->_newsIndex)."\"></div>
+						<div class=\"col-9 bfTextLine\">
+							<div class=\"row bfRow\">
+								<div class=\"col-12 bfTitle\"><h3>".$bfn -> getTitle($theNewsData, $this->_newsIndex)."</h3>
+								<div class=\"bfDate\">".date("F j, Y, g:i a", rest_parse_date($bfn -> getDatePub($theNewsData, $this->_newsIndex)))."</div>
+							</div>
+								</div>";
+					  if ($show_excerpt === 'Yes') {
+							$plugInOutput .= "<div class=\"row bfRow\">
+								<div class=\"col-12 bfExcerpt\">".$bfn -> getExcerpt($theNewsData, $this->_newsIndex)."</div>
+							</div>";
+					  }		
+					  $plugInOutput .= "</div></div><hr>";
+				    $this->_newsIndex += 1;
+			   }
+         break;
+		 	 }
+		 	 case 'Panels' : {
+				$plugInOutput .= "<div id=\"bfPanelContainer\">";
+				$pc = 1;
+				while ($this->_newsIndex < $non) {
+					$plugInOutput .= "<div class=\"bfPanel cl".$pc." cl".($pc+2)."\">
+					 <div class=\"bfImagePanel\"><img src=\"".$bfn -> getMediaLink($theNewsData, $this->_newsIndex)."\"></div>
+					 <div class=\"bfTextPanel\">
+					     <h3>".$bfn -> getTitle($theNewsData, $this->_newsIndex)."</h3>
+							 <br>".date("F j, Y, g:i a", rest_parse_date($bfn -> getDatePub($theNewsData, $this->_newsIndex)));
+					 if ($show_excerpt === 'Yes') {
+						 $plugInOutput .= "<p>".$bfn -> getExcerpt($theNewsData, $this->_newsIndex)."</p>";
+					 }		
+					 $plugInOutput .= "</div></div>";
+					 $this->_newsIndex += 1;
+					 $pc++;
+					 if ($pc == 3) { $pc = 1; }
+				}
+				$plugInOutput .= "</div>";
+				break;
+			 }
+		 }
+			
 
 		$plugInOutput .= "</div>";
 

@@ -15,14 +15,38 @@ class HandleJSON
 
     protected $newsUrl;
 
+	/**
+	 * The ID of this plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string    $plugin_name    The ID of this plugin.
+	 */
+	private $plugin_name;
+
+	/**
+	 * The version of this plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string    $version    The current version of this plugin.
+	 */
+    private $version;
+    
     /**
      * Placeholder constrctor if needed for future use
      * 
      * @return void
      */
-    function __construct()
-    {    
-        $this->newsUrl = "https://www.britishfencing.com/wp-json/wp/v2/posts/?categories=33&_embed";
+    function __construct( $plugin_name, $version ) {
+        
+		$this->plugin_name = $plugin_name;
+        $this->version = $version;
+        
+        $options = get_option($this->plugin_name); 
+        $number_of_news_stories = ( isset( $options['number_of_news_stories'] ) && ! empty( $options['number_of_news_stories'] ) ) ? esc_attr( $options['number_of_news_stories'] ) : '1';
+
+        $this->newsUrl = "https://www.britishfencing.com/wp-json/wp/v2/posts/?categories=33&per_page=".$number_of_news_stories."&_embed";
     }
 
     /**
@@ -102,7 +126,7 @@ class HandleJSON
      */
     function getLink($newsData, $position)
     {
-        return isset($newsData[$position]->link) ? $newsData[$position]->link : '';
+        return isset($newsData[$position]->link) ? $newsData[$position]->link : 'https://www.britishfencing.com/news/';
     }
 
     /**
@@ -128,22 +152,8 @@ class HandleJSON
      */
     function getMediaLink($newsData, $position)
     {
-        return isset($newsData[$position]->_embedded->{'wp:featuredmedia'}[0]->media_details->sizes->{'news-image'}->source_url) ? $newsData[$position]->_embedded->{'wp:featuredmedia'}[0]->media_details->sizes->{'news-image'}->source_url : '';
+        return isset($newsData[$position]->_embedded->{'wp:featuredmedia'}[0]->media_details->sizes->{'news-image'}->source_url) ? $newsData[$position]->_embedded->{'wp:featuredmedia'}[0]->media_details->sizes->{'news-image'}->source_url : plugins_url( '../public/images/bflogo.png', __FILE__ );
     }
-
-    /**
-     * Extract the news post image thumbnail from the JSON data. 
-     * 
-     * @param object $postData JSON object containing all the media data
-     * @param int    $position index onto the data of the news item to check
-     * 
-     * @return string URL to thumbnail image or empty string
-     */
-    function getImageThumbnail($postData, $position)
-    {
-        return isset($postData[$position]->media_details->sizes->thumbnail->source_url) ? $postData[$position]->media_details->sizes->thumbnail->source_url : '';
-    }
-
 }
 
 ?>
