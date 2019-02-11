@@ -8,7 +8,7 @@ via https://www.britishfencing.com/wp-json/wp/v2/
 Useage
 
 shortcode - [britishfencing-news]
-/*
+
  * @wordpress-plugin
  * Plugin Name:       British Fencing News
  * Plugin URI:        https://github.com/epeeme/British-Fencing-News-Plugin
@@ -20,4 +20,3 @@ shortcode - [britishfencing-news]
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       britishfencing-news
  * Domain Path:       /languages
- */
